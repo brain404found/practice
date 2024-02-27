@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  nats:
+    image: nats:2
+    container_name: nats-sample
+    command: "--jetstream -m 8222"
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+      - "6222:6222"
+    networks:
+      - rnpl
+
+volumes:
+  postgresData:
+
+networks:
+  rnpl:
