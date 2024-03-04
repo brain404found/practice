@@ -123,3 +123,4 @@ func writeBatchToDB(params []string) {
 		log.Printf("Error writing to DB: %s\n", err.Error())
 	}
 }
+
