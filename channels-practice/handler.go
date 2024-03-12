@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func processMathParams(c *gin.Context, workerPool chan Params) {
+func processMathParams(c *gin.Context, paramCh chan<- Params) {
 	startTime := time.Now()
 
 	var requestParams Params
@@ -18,7 +18,7 @@ func processMathParams(c *gin.Context, workerPool chan Params) {
 
 	mathParams := generateParams()
 	requestParams.MathParams = mathParams
-	workerPool <- requestParams
+	paramCh <- requestParams
 
 	elapsed := time.Since(startTime)
 	c.JSON(200, gin.H{"message": fmt.Sprintf("Processed math params in %v", elapsed)})

@@ -1,11 +1,8 @@
 package main
 
-import (
-	"sync"
-)
+import "sync"
 
-func createWorkerPool(poolSize int) chan Params {
-	paramCh := make(chan Params)
+func createWorkerPool(poolSize int, paramCh chan Params) {
 	var wgWorker sync.WaitGroup
 
 	for i := 0; i < poolSize; i++ {
@@ -26,10 +23,6 @@ func createWorkerPool(poolSize int) chan Params {
 		}()
 	}
 
-	go func() {
-		wgWorker.Wait()
-		close(paramCh)
-	}()
-
-	return paramCh
+	wgWorker.Wait()
+	close(paramCh)
 }

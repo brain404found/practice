@@ -22,11 +22,13 @@ func main() {
 
 	db.AutoMigrate(&MathParam{})
 
-	workerPool := createWorkerPool(10)
+	paramCh := make(chan Params) 
+	
+	go createWorkerPool(10, paramCh)
 
 	router := gin.Default()
 	router.POST("/ProcessMathParams", func(c *gin.Context) {
-		processMathParams(c, workerPool)
+		processMathParams(c, paramCh)
 	})
 	router.Run(":8080")
 }
