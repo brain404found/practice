@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"sync"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -22,15 +24,60 @@ func main() {
 
 	db.AutoMigrate(&MathParam{})
 
-	paramCh := make(chan Params) 
-	
-	go createWorkerPool(10, paramCh)
+	workerPool := createWorkerPool(10)
 
 	router := gin.Default()
 	router.POST("/ProcessMathParams", func(c *gin.Context) {
-		processMathParams(c, paramCh)
+		processMathParams(c, workerPool)
 	})
 	router.Run(":8080")
+}
+
+func processMathParams(c *gin.Context, workerPool chan Params) {
+	startTime := time.Now()
+
+	var requestParams Params
+	if err := c.BindJSON(&requestParams); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	requestParams.MathParams = generateParams()
+	workerPool <- requestParams
+
+	elapsed := time.Since(startTime)
+	c.JSON(200, gin.H{"message": fmt.Sprintf("Processed math params in %v", elapsed)})
+}
+
+func generateParams() []string {
+	var result []string
+	for i := 0; i < 1000; i++ {
+		result = append(result, fmt.Sprintf("param: %d", i))
+	}
+	return result
+}
+
+func createWorkerPool(poolSize int) chan Params {
+	paramCh := make(chan Params) // Используем небуферизированный канал
+	var wgWorker sync.WaitGroup
+
+	for i := 0; i < poolSize; i++ {
+		wgWorker.Add(1)
+		go func() {
+			defer wgWorker.Done()
+			for params := range paramCh {
+				// Обработка запросов батчем
+				processParams(params)
+			}
+		}()
+	}
+
+	go func() {
+		wgWorker.Wait()
+		close(paramCh)
+	}()
+
+	return paramCh
 }
 
 func processParams(params Params) {
