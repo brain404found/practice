@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package note_v1;
+
+option go_package = "simple-grpc/pkg/note_v1";
+
+service NoteService {
+    rpc Create(CreateIn) returns (CreateOut);
+    rpc Get(GetIn) returns (GetOut);
+    rpc List(ListIn) returns (ListOut);
+    rpc Update(UpdateIn) returns (UpdateOut);
+    rpc Delete(DeleteIn) returns (DeleteOut);
+}
+
+message Note {
+    string id = 1;
+    string title = 2;
+    string content = 3;
+    string created_at = 4;
+    string updated_at = 5;
+}
+
+message CreateIn {
+    string title = 1;
+    string content = 2;
+} 
+
+message CreateOut {
+    Note note = 1;
+}
+
+message GetIn {
+    string id = 1;
+}
+  
+message GetOut {
+    Note note = 1;
+}
+
+message ListIn {}
+
+message ListOut {
+    repeated Note notes = 1;
+}
+  
+message UpdateIn {
+    string id = 1;
+    string title = 2;
+    string content = 3;
+}
+  
+message UpdateOut {
+    Note note = 1;
+}
+  
+message DeleteIn {
+    string id = 1;
+}
+  
+message DeleteOut {
+    bool success = 1;
+}
+  
