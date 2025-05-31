@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package note_v1;
 
-option go_package = "simple-grpc/pkg/note_v1";
+option go_package = "simple-grpc/pkg;note_v1";  // путь где protoc будет сгенерировать файлы
 
 service NoteService {
     rpc Create(CreateIn) returns (CreateOut);
