@@ -142,8 +142,8 @@ func main() {
 
 ------------------------------------------------------------------------------------
 
-#Progressive Tasks and Solutions
-
+# Task-1
+## An example of a task from a real interview where the interviewer gradually makes the task more difficult as the interviewer proceeds
 ### Task 1: Sequential Number Printing
 **Problem**: Print numbers from 0 to 1000 with a 1-second delay between each number.
 ```go
