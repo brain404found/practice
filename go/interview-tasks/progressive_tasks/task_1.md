@@ -139,11 +139,9 @@ func main() {
 5. Очистка ресурсов в горутинах
 6. Паттерны восстановления после паник
 
----
+------------------------------------------------------------------------------------
 
-# Go Interview Tasks
-
-## Progressive Tasks and Solutions
+#Progressive Tasks and Solutions
 
 ### Task 1: Sequential Number Printing
 **Problem**: Print numbers from 0 to 1000 with a 1-second delay between each number.
