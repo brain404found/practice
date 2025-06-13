@@ -123,28 +123,3 @@ func TestTimeout(t *testing.T) {
     }
 }
 ```
-
-## Common Pitfalls
-
-1. **Forgetting to Cancel**
-   - Always call cancel() to prevent resource leaks
-   - Use defer for guaranteed cleanup
-
-2. **Too Short Timeouts**
-   - Can cause unnecessary failures
-   - Consider operation complexity
-
-3. **Too Long Timeouts**
-   - May block resources unnecessarily
-   - Can impact system responsiveness
-
-4. **Ignoring Context**
-   - Always pass context to child operations
-   - Check for context cancellation
-
-## Related Patterns
-
-- Circuit Breaker
-- Retry Pattern
-- Rate Limiting
-- Graceful Shutdown
